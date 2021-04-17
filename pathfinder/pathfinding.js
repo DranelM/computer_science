@@ -39,7 +39,6 @@ const fifteenByFifteen = [
 
 class Maze {
     constructor(mazeArray) {
-        if (!mazeArray) mazeArray = this.getDefaultMaze();
         this.size = mazeArray.length;
         this.maze = mazeArray.map((row, y) => {
             return row.map((cell, x) => {
@@ -54,28 +53,9 @@ class Maze {
                 }
             })
         })
-        this.queue = [this.pointA, this.pointB];
+        this.queueA = [this.pointA];
+        this.queueB = [this.pointB];
         this.solved = false;
-    }
-
-    getDefaultMaze() {
-        return [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
-            [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
-            [0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0,],
-            [0, 0, 0, 0, 4, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0,],
-            [0, 0, 4, 4, 0, 0, 0, 4, 4, 4, 0, 0, 4, 4, 0,],
-            [0, 0, 4, 0, 0, 4, 4, 0, 0, 0, 4, 0, 0, 4, 0,],
-            [0, 0, 4, 0, 4, 0, 0, 0, 4, 0, 0, 4, 0, 4, 0,],
-            [0, 0, 4, 0, 4, 0, 4, 4, 2, 4, 0, 4, 0, 4, 0,],
-            [0, 0, 4, 0, 4, 0, 0, 4, 0, 4, 0, 4, 0, 4, 0,],
-            [0, 0, 4, 0, 0, 4, 0, 0, 0, 4, 0, 4, 0, 4, 0,],
-            [0, 0, 0, 4, 0, 0, 4, 4, 4, 4, 0, 4, 0, 4, 0,],
-            [0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 4, 0, 4, 0,],
-            [0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 4, 0, 0, 4, 0,],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
-        ]
     }
 
     findNeighborsOf(point) {
@@ -112,8 +92,8 @@ class Maze {
     }
 
     step() {
-        if (this.queue.length && !this.solved) {
-            var originPoint = this.queue.shift();
+        if (this.queueA.length && !this.solved) {
+            var originPoint = this.queueA.shift();
             var neighbors = this.findNeighborsOf(originPoint);
             for (let n of neighbors) {
                 var nCell = this.maze[n[1]][n[0]]
@@ -126,11 +106,27 @@ class Maze {
                 nCell.visitedBy = originCell.visitedBy;
                 nCell.path = originCell.path.concat([[n[1], n[0]]]);
                 nCell.distance += 1 + originCell.distance;
-                this.queue.push(n)
+                this.queueA.push(n)
+            }
+        }
+
+        if (this.queueB.length && !this.solved) {
+            var originPoint = this.queueB.shift();
+            var neighbors = this.findNeighborsOf(originPoint);
+            for (let n of neighbors) {
+                var nCell = this.maze[n[1]][n[0]]
+                var originCell = this.maze[originPoint[1]][originPoint[0]]
+                if (nCell.visitedBy !== BY_NOONE) {
+                    this.printSolution(originCell, nCell)
+                    this.solved = true
+                    return
+                }
+                nCell.visitedBy = originCell.visitedBy;
+                nCell.path = originCell.path.concat([[n[1], n[0]]]);
+                nCell.distance += 1 + originCell.distance;
+                this.queueB.push(n)
             }
             // console.log(this.toString());
-        } else {
-            console.log("The maze has been solved!");
         }
     }
 
@@ -141,6 +137,7 @@ class Maze {
         }
         this.maze[this.pointA[1]][this.pointA[0]].visitedBy = 'X'
         this.maze[this.pointB[1]][this.pointB[0]].visitedBy = 'X'
+        console.log("Solved");
         console.log(this.toString());
         return 1
     }
@@ -154,6 +151,14 @@ class Maze {
             result += '\n';
         }
         return result;
+    }
+
+    getBoardArray() {
+        return this.maze.map((row) => {
+            return row.map((cell) => {
+                return cell.visitedBy
+            })
+        })
     }
 }
 

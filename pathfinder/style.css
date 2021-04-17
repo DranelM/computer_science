@@ -12,24 +12,31 @@
     height: 50px;
     }
 
-.BY_A {
+
+.EMPTY {
+    border-radius: 0%;
+}
+
+.A {
     background-color: red;
 }
 
-.BY_B {
+.B {
     background-color: blue;
 }
+
 
 .WALL {
     background-color: grey;
 }
 
 .path {
-    background-color: chartreuse;
+    background-color: black;
 }
 
 .solvedAB {
-    background-color: cornflowerblue;
-    border: dotted;
+    background-color: black;
+    border: solid;
+    border-radius: 50%;
     border-color: darkorange;
 }

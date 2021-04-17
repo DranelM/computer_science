@@ -10,11 +10,25 @@
 </head>
 
 <body>
+
+    <button class='changeSize'>Change size</button><input name="size" type="text" placeholder="size"><br>
     <button class='start'>Start</button>
     <div class="board"></div>
 
+    <div>
+        <input type="radio" id="A" name="cellTypeRadio" value="A">
+        <label for="A">pointA</label>
+
+        <input type="radio" id="B" name="cellTypeRadio" value="B">
+        <label for="B">pointB</label>
+
+        <input type="radio" id="WALL" name="cellTypeRadio" value="WALL">
+        <label for="WALL">wall</label>
+    </div>
+
+
     <script src="pathfinding.js"></script>
-    <script src="controler.js"></script>
+    <script src="board.js"></script>
 </body>
 
 </html>
