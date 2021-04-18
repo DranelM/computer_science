@@ -33,6 +33,9 @@ class Board {
 
     }
 
+    /**
+     * Makes it possible to change the type of cell (selected with radio) by clicking on it
+     */
     makeCellsClickable() {
         const allCells = document.querySelectorAll('.cell');
         allCells.forEach((cell) => {
@@ -117,12 +120,18 @@ class Board {
         this.makeCellsClickable();
     }
 
+    /**
+     * One iteration of the pathfinding algorythm, runs in a loop after runing this.run() function
+     */
     iterate() {
         this.maze.step();
         this.boardMatrix = this.maze.getBoardArray();
         this.redrawBoard();
     }
 
+    /**
+     * runs the pathfinding algorythm, and changes "start" button to "restart" button 
+     */
     run() {
         this.maze = new Maze(this.boardMatrix);
 
