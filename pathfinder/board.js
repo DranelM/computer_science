@@ -30,7 +30,6 @@ class Board {
         this.boardDiv = document.querySelector('.board');
 
         this.createBoard();
-        this.makeCellsClickable();
 
     }
 
@@ -115,6 +114,7 @@ class Board {
                 row.appendChild(cell);
             }
         }
+        this.makeCellsClickable();
     }
 
     iterate() {
@@ -125,7 +125,32 @@ class Board {
 
     run() {
         this.maze = new Maze(this.boardMatrix);
-        setInterval(this.iterate.bind(this), 50)
+
+        const startButton = document.querySelector('.start');
+        startButton.style.display = 'none';
+
+        const restartButton = document.querySelector('.restart');
+        restartButton.style.display = 'block';
+
+        restartButton.addEventListener('click', () => {
+            clearInterval(this.pathfinding);
+            this.boardMatrix = this.boardMatrix.map((row, r_idx) => {
+                return row.map((cell, c_idx) => {
+                    if (this.checkIfSameArrays(this.pointA, [r_idx, c_idx])) {
+                        return this.CELLTYPES['A']
+                    } else if (this.checkIfSameArrays(this.pointB, [r_idx, c_idx])) {
+                        return this.CELLTYPES['B']
+                    } else {
+                        return 0
+                    }
+                })
+            })
+            this.createBoard();
+            startButton.style.display = 'block';
+            restartButton.style.display = 'none';
+        })
+
+        this.pathfinding = setInterval(this.iterate.bind(this), 50)
     }
 
 }
@@ -145,3 +170,5 @@ document.querySelector('.changeSize').addEventListener('click', () => {
     }
 
 })
+
+
