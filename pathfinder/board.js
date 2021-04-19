@@ -124,8 +124,8 @@ class Board {
      * One iteration of the pathfinding algorythm, runs in a loop after runing this.run() function
      */
     iterate() {
-        this.maze.step();
-        this.boardMatrix = this.maze.getBoardArray();
+        this.pathfinder.step();
+        this.boardMatrix = this.pathfinder.getBoardArray();
         this.redrawBoard();
     }
 
@@ -133,7 +133,7 @@ class Board {
      * runs the pathfinding algorythm, and changes "start" button to "restart" button 
      */
     run() {
-        this.maze = new Maze(this.boardMatrix);
+        this.pathfinder = new Pathfinder(this.boardMatrix);
 
         const startButton = document.querySelector('.start');
         startButton.style.display = 'none';

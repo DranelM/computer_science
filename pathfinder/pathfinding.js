@@ -37,7 +37,7 @@ const fifteenByFifteen = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
 ]
 
-class Maze {
+class Pathfinder {
     constructor(mazeArray) {
         this.size = mazeArray.length;
         this.maze = mazeArray.map((row, y) => {
@@ -57,7 +57,6 @@ class Maze {
         this.queueB = [this.pointB];
         this.solved = false;
     }
-
     findNeighborsOf(point) {
         let [x, y] = point
         let neighbors = [];
