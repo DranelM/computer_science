@@ -31,6 +31,26 @@ class Graph {
             });
         }
     }
+
+    breadthFirstTraversal(firsNode) {
+        const queue = [];
+        const visited = [];
+
+        queue.push(firsNode);
+        visited[firsNode] = true;
+
+        while (queue.length) {
+            const current = queue.shift();
+            console.log(current);
+            this.adjList[current].forEach(neighbor => {
+
+                if (!visited[neighbor]) {
+                    queue.push(neighbor);
+                    visited[neighbor] = true;
+                }
+            })
+        }
+    }
 }
 
 const graph = new Graph();
@@ -49,7 +69,8 @@ graph.addEdge(4, 5);
 
 console.log(graph);
 
-graph.depthFirstTraversal(1);
+// graph.depthFirstTraversal(1);
+graph.breadthFirstTraversal(1);
 
 
 
